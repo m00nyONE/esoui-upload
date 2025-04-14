@@ -1,0 +1,67 @@
+name: 'ESOUI Addon upload'
+description: 'Uploads an addon to ESOUI'
+author: 'm00nyONE'
+branding:
+  icon: 'upload-cloud'
+  color: 'blue'
+
+inputs:
+  api_key:
+    description: 'ESOUI API Key'
+    required: true
+  addon_id:
+    description: 'Addon ID'
+    required: true
+  version:
+    description: 'Addon version'
+    required: true
+  zip_file:
+    description: 'Path to Addon zip file'
+    required: true
+  changelog_file:
+    description: 'Path to changelog file'
+    required: false
+    default: CHANGELOG.md
+runs:
+  using: "composite"
+  steps:
+    - name: Mask API Key
+      shell: bash
+      run: echo "::add-mask::${{ inputs.api_key }}"
+
+    - name: verify inputs
+      shell: bash
+      run: |
+        # Check if api_key is not empty
+        if [ -z "${{ inputs.api_key }}" ]; then
+          echo "::error:: ❌ api_key is empty"
+          exit 1
+        fi
+        # Check if addon_id is a number
+        re='^[0-9]+$'
+        if ! [[ ${{ inputs.addon_id }} =~ $re ]]; then
+          echo "::error:: ❌ addon_id is not a number"
+          exit 1
+        fi
+        # Check if changelog file exists
+        if [ ! -f "${{ inputs.changelog_file }}" ]; then
+          echo "::error:: ❌ Changelog file not found: ${{ inputs.changelog_file }}"
+          exit 1
+        fi
+        # Check if zip file exists
+        if [ ! -f "${{ inputs.zip_file }}" ]; then
+          echo "::error:: ❌ Zip file not found: ${{ inputs.zip_file }}"
+          exit 1
+        fi 
+
+    - name: Upload Addon to ESOUI
+      shell: bash
+      run: |
+        set +x
+        curl --silent --fail -X POST \
+          -H "x-api-token: ${{ inputs.api_key }}" \
+          -F "id=${{ inputs.addon_id }}" \
+          -F "version=${{ inputs.version }}" \
+          -F "updatefile=@${{ inputs.zip_file }}" \
+          -F "changelog=$(cat ${{ inputs.changelog_file }})" \
+          https://api.esoui.com/addons/update
