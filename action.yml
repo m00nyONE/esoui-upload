@@ -1,5 +1,5 @@
 name: 'ESOUI Addon upload'
-description: 'Uploads an addon to ESOUI'
+description: 'Uploads an addon to ESOUI ( PC Addons only )'
 author: 'm00nyONE'
 branding:
   icon: 'upload-cloud'

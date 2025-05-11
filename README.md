@@ -6,6 +6,7 @@
 
 
 This GitHub Action automates the upload of your ESOUI (Elder Scrolls Online User Interface) addon to [esoui.com](https://esoui.com).
+This only works for PC addons.
 
 It wraps the upload process in a safe and reusable action, helping you keep your secrets secure and your workflows clean.
 
@@ -17,6 +18,11 @@ It wraps the upload process in a safe and reusable action, helping you keep your
 - ✅ Customizable: Reusable across multiple addons or repositories.
 
 ## Usage
+
+### 0. Prerequisite
+
+- The addon needs to be uploaded manually to ESOUI once to get it's ID. You can do this here: https://www.esoui.com/downloads/upload-update.php
+- generate an API key here: https://www.esoui.com/downloads/filecpl.php?action=apitokens
 
 ### 1. Reference the Action in Your Workflow
 
