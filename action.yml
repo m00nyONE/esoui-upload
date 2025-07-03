@@ -22,6 +22,18 @@ inputs:
     description: 'Path to changelog file'
     required: false
     default: CHANGELOG.md
+  description_file:
+    description: 'Path to description file'
+    required: false
+    default: description.txt
+  compatibility:
+    description: 'Compatibile game version'
+    required: false
+  test:
+    description: 'Whether to use the test API endpoint'
+    required: false
+    default: false
+    type: boolean
 runs:
   using: "composite"
   steps:
@@ -48,20 +60,39 @@ runs:
           echo "::error:: ❌ Changelog file not found: ${{ inputs.changelog_file }}"
           exit 1
         fi
+        # Check if description file exists
+        if [ ! -f "${{ inputs.description_file }}" ]; then
+          echo "::error:: ❌ Description file not found: ${{ inputs.description_file }}"
+          exit 1
+        fi
         # Check if zip file exists
         if [ ! -f "${{ inputs.zip_file }}" ]; then
           echo "::error:: ❌ Zip file not found: ${{ inputs.zip_file }}"
           exit 1
         fi 
+        # Check compatibility format
+        reCompat='^[0-9]+\.[0-9]+\.[0-9]+$'
+        if ! [[ ${{ inputs.compatibility }} =~ $reCompat ]]; then
+          echo "::error:: ❌ Incorrect compatibility format"
+          exit 1
+        fi
 
     - name: Upload Addon to ESOUI
       shell: bash
       run: |
         set +x
+        if ${{ inputs.test }}; then
+          API_URL="https://api.esoui.com/addons/updatetest"
+          echo "::notice:: 🧪 Test deployment!"
+        else
+          API_URL="https://api.esoui.com/addons/update"
+        fi
         curl --silent --fail -X POST \
           -H "x-api-token: ${{ inputs.api_key }}" \
           -F "id=${{ inputs.addon_id }}" \
           -F "version=${{ inputs.version }}" \
           -F "updatefile=@${{ inputs.zip_file }}" \
           -F "changelog=$(cat ${{ inputs.changelog_file }})" \
-          https://api.esoui.com/addons/update
+          -F "description=$(cat ${{ inputs.description_file }})" \
+          -F "compatibility=${{ inputs.compatibility }}" \
+          "$API_URL"
