@@ -44,16 +44,16 @@ Example workflow step:
 
 ### 2. Inputs
 
-| Name           | Required | Default      | Description                                    |
-|----------------|----------|--------------|------------------------------------------------|
-| api_key        | true     | -            | Your ESOUI API key (stored as a GitHub secret) |
-| addon_id       | true     | -            | The ESOUI Addon ID                             |
-| version        | true     | -            | The version number of the addon                |
-| zip_file       | true     | -            | Path to your zipped addon file                 |
-| changelog_file | false    | CHANGELOG.md | Path to your changelog file                    |
-| description_file | false  | -            | Path to your description file                  |
-| compatibility  | false    | -            | Compatible version of the game                 |
-| test           | false    | false        | Whether to use test API                        |
+| Name             | Required | Default         | Description                                    |
+|------------------|----------|-----------------|------------------------------------------------|
+| api_key          | true     | -               | Your ESOUI API key (stored as a GitHub secret) |
+| addon_id         | true     | -               | The ESOUI Addon ID                             |
+| version          | true     | -               | The version number of the addon                |
+| zip_file         | true     | -               | Path to your zipped addon file                 |
+| changelog_file   | false    | CHANGELOG.md    | Path to your changelog file                    |
+| description_file | false    | description.txt | Path to your description file                  |
+| compatibility    | false    | -               | Compatible version of the game                 |
+| test             | false    | false           | Whether to use test API                        |
 
 ### 3. Secrets
 
