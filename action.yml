@@ -75,8 +75,7 @@ runs:
         fi
         # Check compatibility format (only if provided)
         if [ -n "${{ inputs.compatibility }}" ]; then
-          reCompat='^[0-9]+\.[0-9]+\.[0-9]+$'
-          if ! [[ ${{ inputs.compatibility }} =~ $reCompat ]]; then
+          if ! echo "${{ inputs.compatibility }}" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
             echo "::error:: ❌ Incorrect compatibility format"
             exit 1
           fi
