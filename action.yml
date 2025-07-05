@@ -55,26 +55,32 @@ runs:
           echo "::error:: ❌ addon_id is not a number"
           exit 1
         fi
-        # Check if changelog file exists
-        if [ ! -f "${{ inputs.changelog_file }}" ]; then
-          echo "::error:: ❌ Changelog file not found: ${{ inputs.changelog_file }}"
-          exit 1
+        # Check if changelog file exists (only if provided)
+        if [ -n "${{ inputs.changelog_file }}" ]; then
+          if [ ! -f "${{ inputs.changelog_file }}" ]; then
+            echo "::error:: ❌ Changelog file not found: ${{ inputs.changelog_file }}"
+            exit 1
+          fi
         fi
-        # Check if description file exists
-        if [ ! -f "${{ inputs.description_file }}" ]; then
-          echo "::error:: ❌ Description file not found: ${{ inputs.description_file }}"
-          exit 1
+        # Check if description file exists (only if provided)
+        if [ -n "${{ inputs.description_file }}" ]; then
+          if [ ! -f "${{ inputs.description_file }}" ]; then
+            echo "::error:: ❌ Description file not found: ${{ inputs.description_file }}"
+            exit 1
+          fi
         fi
         # Check if zip file exists
         if [ ! -f "${{ inputs.zip_file }}" ]; then
           echo "::error:: ❌ Zip file not found: ${{ inputs.zip_file }}"
           exit 1
-        fi 
-        # Check compatibility format
-        reCompat='^[0-9]+\.[0-9]+\.[0-9]+$'
-        if ! [[ ${{ inputs.compatibility }} =~ $reCompat ]]; then
-          echo "::error:: ❌ Incorrect compatibility format"
-          exit 1
+        fi
+        # Check compatibility format (only if provided)
+        if [ -n "${{ inputs.compatibility }}" ]; then
+          reCompat='^[0-9]+\.[0-9]+\.[0-9]+$'
+          if ! [[ ${{ inputs.compatibility }} =~ $reCompat ]]; then
+            echo "::error:: ❌ Incorrect compatibility format"
+            exit 1
+          fi
         fi
 
     - name: Upload Addon to ESOUI
@@ -87,12 +93,24 @@ runs:
         else
           API_URL="https://api.esoui.com/addons/update"
         fi
-        curl --silent --fail -X POST \
-          -H "x-api-token: ${{ inputs.api_key }}" \
-          -F "id=${{ inputs.addon_id }}" \
-          -F "version=${{ inputs.version }}" \
-          -F "updatefile=@${{ inputs.zip_file }}" \
-          -F "changelog=$(cat ${{ inputs.changelog_file }})" \
-          -F "description=$(cat ${{ inputs.description_file }})" \
-          -F "compatibility=${{ inputs.compatibility }}" \
-          "$API_URL"
+        
+        CURL_CMD="curl --silent --fail -X POST \
+          -H \"x-api-token: ${{ inputs.api_key }}\" \
+          -F \"id=${{ inputs.addon_id }}\" \
+          -F \"version=${{ inputs.version }}\" \
+          -F \"updatefile=@${{ inputs.zip_file }}\""
+        
+        if [ -n "${{ inputs.changelog_file }}" ]; then
+          CURL_CMD="$CURL_CMD -F \"changelog=<${{ inputs.changelog_file }}\""
+        fi
+        
+        if [ -n "${{ inputs.description_file }}" ]; then
+          CURL_CMD="$CURL_CMD -F \"description=<${{ inputs.description_file }}\""
+        fi
+        
+        if [ -n "${{ inputs.compatibility }}" ]; then
+          CURL_CMD="$CURL_CMD -F \"compatibility=${{ inputs.compatibility }}\""
+        fi
+        
+        CURL_CMD="$CURL_CMD \"$API_URL\""
+        eval $CURL_CMD
