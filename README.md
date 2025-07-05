@@ -39,7 +39,7 @@ Example workflow step:
     changelog_file: 'CHANGELOG.md'
     description_file: 'description.txt'
     compatibility: '11.0.0'
-    test: true
+    test: false
 ```
 
 ### 2. Inputs
