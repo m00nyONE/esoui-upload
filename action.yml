@@ -25,7 +25,7 @@ inputs:
   description_file:
     description: 'Path to description file'
     required: false
-    default: description.txt
+    default: README_ESOUI.txt
   compatibility:
     description: 'Compatibile game version'
     required: false

@@ -37,23 +37,23 @@ Example workflow step:
     version: ${{ env.ADDON_VERSION }}
     zip_file: ${{ env.ZIP_FULL_NAME }}
     changelog_file: 'CHANGELOG.md'
-    description_file: 'description.txt'
+    description_file: 'README_ESOUI.txt'
     compatibility: '11.0.0'
     test: false
 ```
 
 ### 2. Inputs
 
-| Name             | Required | Default         | Description                                    |
-|------------------|----------|-----------------|------------------------------------------------|
-| api_key          | true     | -               | Your ESOUI API key (stored as a GitHub secret) |
-| addon_id         | true     | -               | The ESOUI Addon ID                             |
-| version          | true     | -               | The version number of the addon                |
-| zip_file         | true     | -               | Path to your zipped addon file                 |
-| changelog_file   | false    | CHANGELOG.md    | Path to your changelog file                    |
-| description_file | false    | description.txt | Path to your description file                  |
-| compatibility    | false    | -               | Compatible version of the game                 |
-| test             | false    | false           | Whether to use test API                        |
+| Name             | Required | Default          | Description                                    |
+|------------------|----------|------------------|------------------------------------------------|
+| api_key          | true     | -                | Your ESOUI API key (stored as a GitHub secret) |
+| addon_id         | true     | -                | The ESOUI Addon ID                             |
+| version          | true     | -                | The version number of the addon                |
+| zip_file         | true     | -                | Path to your zipped addon file                 |
+| changelog_file   | false    | CHANGELOG.md     | Path to your changelog file                    |
+| description_file | false    | README_ESOUI.txt | Path to your description file                  |
+| compatibility    | false    | -                | Compatible version of the game                 |
+| test             | false    | false            | Whether to use test API                        |
 
 ### 3. Secrets
 
