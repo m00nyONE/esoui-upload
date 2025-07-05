@@ -37,6 +37,9 @@ Example workflow step:
     version: ${{ env.ADDON_VERSION }}
     zip_file: ${{ env.ZIP_FULL_NAME }}
     changelog_file: 'CHANGELOG.md'
+    description_file: 'description.txt'
+    compatibility: '11.0.0'
+    test: false
 ```
 
 ### 2. Inputs
@@ -48,6 +51,9 @@ Example workflow step:
 | version        | true     | -            | The version number of the addon                |
 | zip_file       | true     | -            | Path to your zipped addon file                 |
 | changelog_file | false    | CHANGELOG.md | Path to your changelog file                    |
+| description_file | false  | -            | Path to your description file                  |
+| compatibility  | false    | -            | Compatible version of the game                 |
+| test           | false    | false        | Whether to use test API                        |
 
 ### 3. Secrets
 
