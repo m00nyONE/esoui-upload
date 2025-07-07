@@ -30,7 +30,7 @@ Example workflow step:
 
 ```yaml
 - name: Upload to ESOUI
-  uses: m00nyONE/esoui-upload@v1
+  uses: m00nyONE/esoui-upload@v2
   with:
     api_key: ${{ secrets.ESOUI_API_KEY }}
     addon_id: '123456'
@@ -145,7 +145,7 @@ jobs:
           makeLatest: true
 
       - name: Send to ESOUI
-        uses: m00nyONE/esoui-upload@v1
+        uses: m00nyONE/esoui-upload@v2
         with:
           api_key: ${{ secrets.ESOUI_API_KEY }}
           addon_id: '2311'
